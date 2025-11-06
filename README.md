@@ -1,6 +1,8 @@
 # VIGENERE-CIPHER
 ## EX. NO: 4
- 
+ ```
+GEERTHIVASH J.D. - 212223060067
+```
 
 ## IMPLEMETATION OF VIGENERE CIPHER
  
@@ -30,7 +32,50 @@ STEP-8: Repeat the above steps to generate the entire cipher text.
 
 
 ## PROGRAM
-
+```
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+int charToNum(char c) {
+return toupper(c) - 'A';
+}
+char numToChar(int n) {
+return (n % 26) + 'A';
+}
+int main() {
+char text[100], key[100], fullKey[100], cipher[100];
+int i, lenT, lenK;
+printf("Enter the plain text: ");
+fgets(text, sizeof(text), stdin);
+text[strcspn(text, "\n")] = '\0';
+printf("Enter the keyword: ");
+fgets(key, sizeof(key), stdin);
+key[strcspn(key, "\n")] = '\0';
+lenT = strlen(text);
+lenK = strlen(key);
+for (i = 0; i < lenT; i++) {
+fullKey[i] = key[i % lenK];
+}
+fullKey[lenT] = '\0';
+for (i = 0; i < lenT; i++) {
+char pt = toupper(text[i]);
+char kt = toupper(fullKey[i]);
+if (pt < 'A' || pt > 'Z') {
+cipher[i] = pt; // leave non-alphabet
+} else {
+int row = charToNum(pt);
+int col = charToNum(kt);
+cipher[i] = numToChar(row + col);
+}
+}
+cipher[lenT] = '\0';
+printf("\nFull Key: %s\n", fullKey);
+printf("Cipher Text: %s\n", cipher);
+return 0;
+}
+```
 ## OUTPUT
+<img width="637" height="276" alt="image" src="https://github.com/user-attachments/assets/754f88d7-1497-48cc-b2af-ca3132158644" />
 
 ## RESULT
+Thus the implementation of Vigenere cipher had been executed successfully
