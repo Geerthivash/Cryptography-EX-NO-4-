@@ -37,30 +37,41 @@ STEP-8: Repeat the above steps to generate the entire cipher text.
 #include <string.h>
 
 int main() {
-    char msg[100], key[50];
-    printf("Message: ");  fgets(msg, 100, stdin);
-    printf("Key: ");      fgets(key, 50, stdin);
+    char text[100], cipher[100], key[50];
+    int i, j = 0, k;
 
-    msg[strcspn(msg,"\n")] = 0;
-    key[strcspn(key,"\n")] = 0;
+    printf("Enter the plain text: ");
+    scanf("%[^\n]", text);
 
-    int m = strlen(msg), k = strlen(key);
+    printf("Enter the key: ");
+    scanf(" %s", key);
 
-    for(int i = 0, j = 0; i < m; i++) {
-        char c = msg[i];
-        char shift = key[j % k];
-        if(c >= 'A' && c <= 'Z') {
-            msg[i] = 'A' + (c - 'A' + (shift - 'A')) % 26;
+    k = strlen(key);
+
+    for (i = 0; text[i] != '\0'; i++) {
+        char ch = text[i];
+        char shift = key[j % k];   // repeat key
+
+        if (ch >= 'a' && ch <= 'z') {
+            cipher[i] = 'a' + ( (ch - 'a') + (shift - 'a') ) % 26;
             j++;
-        } else if(c >= 'a' && c <= 'z') {
-            msg[i] = 'a' + (c - 'a' + (shift - 'a')) % 26;
+        }
+        else if (ch >= 'A' && ch <= 'Z') {
+            cipher[i] = 'A' + ( (ch - 'A') + (shift - 'A') ) % 26;
             j++;
+        }
+        else {
+            cipher[i] = ch;  // keep special chars same
         }
     }
 
-    printf("Encrypted: %s", msg);
+    cipher[i] = '\0';
+
+    printf("Cipher text: %s\n", cipher);
+
     return 0;
 }
+
 
 ```
 ## OUTPUT
