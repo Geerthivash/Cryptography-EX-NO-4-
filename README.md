@@ -35,44 +35,33 @@ STEP-8: Repeat the above steps to generate the entire cipher text.
 ```
 #include <stdio.h>
 #include <string.h>
-#include <ctype.h>
-int charToNum(char c) {
-return toupper(c) - 'A';
-}
-char numToChar(int n) {
-return (n % 26) + 'A';
-}
+
 int main() {
-char text[100], key[100], fullKey[100], cipher[100];
-int i, lenT, lenK;
-printf("Enter the plain text: ");
-fgets(text, sizeof(text), stdin);
-text[strcspn(text, "\n")] = '\0';
-printf("Enter the keyword: ");
-fgets(key, sizeof(key), stdin);
-key[strcspn(key, "\n")] = '\0';
-lenT = strlen(text);
-lenK = strlen(key);
-for (i = 0; i < lenT; i++) {
-fullKey[i] = key[i % lenK];
+    char msg[100], key[50];
+    printf("Message: ");  fgets(msg, 100, stdin);
+    printf("Key: ");      fgets(key, 50, stdin);
+
+    msg[strcspn(msg,"\n")] = 0;
+    key[strcspn(key,"\n")] = 0;
+
+    int m = strlen(msg), k = strlen(key);
+
+    for(int i = 0, j = 0; i < m; i++) {
+        char c = msg[i];
+        char shift = key[j % k];
+        if(c >= 'A' && c <= 'Z') {
+            msg[i] = 'A' + (c - 'A' + (shift - 'A')) % 26;
+            j++;
+        } else if(c >= 'a' && c <= 'z') {
+            msg[i] = 'a' + (c - 'a' + (shift - 'a')) % 26;
+            j++;
+        }
+    }
+
+    printf("Encrypted: %s", msg);
+    return 0;
 }
-fullKey[lenT] = '\0';
-for (i = 0; i < lenT; i++) {
-char pt = toupper(text[i]);
-char kt = toupper(fullKey[i]);
-if (pt < 'A' || pt > 'Z') {
-cipher[i] = pt; // leave non-alphabet
-} else {
-int row = charToNum(pt);
-int col = charToNum(kt);
-cipher[i] = numToChar(row + col);
-}
-}
-cipher[lenT] = '\0';
-printf("\nFull Key: %s\n", fullKey);
-printf("Cipher Text: %s\n", cipher);
-return 0;
-}
+
 ```
 ## OUTPUT
 <img width="637" height="276" alt="image" src="https://github.com/user-attachments/assets/754f88d7-1497-48cc-b2af-ca3132158644" />
